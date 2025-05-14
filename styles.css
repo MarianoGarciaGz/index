@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wdth,wght@75..100,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:wdth,wght@75..100,500&display=swap');
 
 :root {
-    --background-color: #000000;
+    --background-color: rgba(49, 33, 19, 0.85);
     --text-color: #cecece;
 }
 
@@ -9,12 +9,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Cal Sans', 'Roboto', sans-serif;
+    /* font-family: 'Cal Sans', 'Roboto', 'Mulish', sans-serif; */
+    /* font-family: 'Cal Sans', 'Roboto', 'Mulish', sans-serif; */
+    font-family: 'Mulish', sans-serif;
     font-optical-sizing: auto;
-    font-weight: 300;
+    font-weight: 500;
     font-style: normal;
     color: var(--text-color);
-    font-size: 1.25em;
+    font-size: 1.2em;
     line-height: 0.9em;
     text-shadow: #cecece 0px 0px 10px;
 }
@@ -62,7 +64,7 @@ body {
 
 #background::before {
     content: '';
-    background: rgba(49, 36, 25, 0.85);
+    background: var(--background-color);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -94,11 +96,199 @@ body {
 }
 
 .content {
+    padding: 1rem;
+    /* Asegúrate de que el contenido esté por encima de los círculos */
+}
+
+/* Contenedor principal del dashboard */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr; /* Distribución de columnas */
+    grid-gap: 15px;
+    margin: 0 auto;
+    width: 100%;
+    height: calc(100dvh - 40px); /* Altura total menos padding */
+}
+
+/* Estilos de los paneles */
+.panel {
+    border-radius: 1rem;
+    border: 3px solid #cecece;
+    box-shadow: 0 0 7px #cecece, 0 0 7px #cecece inset;
+    padding: 1.5rem;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Panel de tareas */
+.tasks-panel {
+    height: 100%;
+}
+
+.tasks-content {
+    flex-grow: 1;
+}
+
+/* Panel de tracker */
+.tracker-panel {
+    height: 100%;
+}
+
+.tracker-content {
+    flex-grow: 1;
+}
+
+/* Contenedor de widgets */
+.widgets-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr; /* Distribución de filas para los widgets */
+    grid-gap: 20px;
+    height: 100%;
+}
+
+/* Widget común */
+.widget {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Widget de reloj */
+.clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.clock-face {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.clock-hour,
+.clock-minute {
     position: absolute;
+    background-color: #333;
+    transform-origin: bottom center;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+}
+
+.clock-hour {
+    width: 2px;
+    height: 30px;
+    transform: translate(-50%, -100%) rotate(45deg);
+}
+
+.clock-minute {
+    width: 2px;
+    height: 40px;
+    transform: translate(-50%, -100%) rotate(90deg);
+}
+
+.clock-time {
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+
+/* Widget de calendario */
+.calendar-widget {
     text-align: center;
-    z-index: 1;
-    /* Asegúrate de que el contenido esté por encima de los círculos */
+}
+
+.calendar-content {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    width: 90%;
+    height: 70%;
+    margin: 0 auto;
+}
+
+/* Widget de gráfico */
+.chart {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Media Queries para Responsive */
+
+/* Tablets */
+@media (max-width: 992px) {
+    .dashboard-container {
+        grid-template-columns: 1fr 1fr; /* Cambiamos a 2 columnas */
+        grid-template-rows: auto auto; /* Añadimos 2 filas */
+        grid-template-areas:
+            'tasks tracker'
+            'widgets widgets'; /* El contenedor de widgets ocupa toda la fila */
+    }
+
+    .tasks-panel {
+        grid-area: tasks;
+    }
+
+    .tracker-panel {
+        grid-area: tracker;
+    }
+
+    .widgets-container {
+        grid-area: widgets;
+        grid-template-columns: repeat(3, 1fr); /* Los widgets en una fila horizontal */
+        grid-template-rows: 1fr;
+    }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr; /* Una sola columna */
+        grid-template-areas:
+            'tasks'
+            'tracker'
+            'widgets';
+    }
+
+    .widgets-container {
+        grid-template-columns: 1fr; /* Los widgets apilados */
+        grid-template-rows: repeat(3, auto);
+    }
+}
+
+/* Dispositivos muy pequeños */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .dashboard-container {
+        grid-gap: 10px;
+        height: auto; /* Altura automática para dispositivos pequeños */
+    }
+
+    .panel {
+        padding: 10px;
+    }
+
+    .tasks-panel,
+    .tracker-panel {
+        min-height: 300px; /* Altura mínima para estos paneles */
+    }
+
+    .widget {
+        min-height: 200px; /* Altura mínima para widgets */
+    }
 }
