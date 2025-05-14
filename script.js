@@ -1,3 +1,16 @@
+var wallpaperSettings = {
+    fps: 60
+}
+
+window.wallpaperPropertyListener = {
+    applyGeneralProperties: function (properties) {
+        if (properties.fps) {
+            wallpaperSettings.fps = properties.fps
+        }
+    }
+}
+
+// Conservamos el script original
 window.wallpaperPropertyListener = {
     applyUserProperties: function (properties) {
         if (properties.customcolor) {
@@ -9,40 +22,53 @@ window.wallpaperPropertyListener = {
             var customColorAsCSS = 'rgb(' + customColor + ')'
             var backgroundElement = document.getElementById('background')
             backgroundElement.style.backgroundColor = customColorAsCSS
-            // Do something useful with the value here or assign it to a global variable
         }
     }
 }
 
-// Configura la limitación de FPS deseada
-const targetFPS = 10 // Por ejemplo, 30 FPS en lugar de 60
-const frameTime = 1000 / targetFPS
-
-let lastFrameTime = 0
-let animationId
-
-function animate(currentTime) {
-    animationId = requestAnimationFrame(animate)
-
-    // Calcula el tiempo transcurrido
-    const deltaTime = currentTime - lastFrameTime
-
-    // Solo renderiza si ha pasado suficiente tiempo
-    if (deltaTime >= frameTime) {
-        // Actualiza el tiempo del último frame
-        // Ajusta para evitar acumulación de error
-        lastFrameTime = currentTime - (deltaTime % frameTime)
-
-        // Aquí va tu código de animación
-        updateAnimation()
-        renderScene()
-    }
+// Función para generar un número aleatorio entre min y max
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-// Inicia la animación
-animationId = requestAnimationFrame(animate)
+// Función para generar un color aleatorio
+function randomColor() {
+    return `hsl(${random(-200, 50)}, ${random(70, 100)}%, ${random(40, 80)}%)`
+}
 
-// Para detener la animación si es necesario
-function stopAnimation() {
-    cancelAnimationFrame(animationId)
+// Crear círculos animados
+const circlesContainer = document.getElementById('animated-circles')
+const numberOfCircles = 5 // Número de círculos a crear
+
+for (let i = 0; i < numberOfCircles; i++) {
+    const circle = document.createElement('div')
+    circle.classList.add('circle')
+
+    // Tamaño aleatorio
+    const size = random(200, 350)
+    circle.style.width = `${size}px`
+    circle.style.height = `${size}px`
+
+    // Posición inicial aleatoria
+    circle.style.left = `${random(-100, window.innerWidth - size + 100)}px`
+    circle.style.top = `${random(-100, window.innerHeight - size + 100)}px`
+
+    // Color aleatorio
+    circle.style.backgroundColor = randomColor()
+
+    // Valores aleatorios para la animación
+    circle.style.setProperty('--x1', `${random(-500, 500)}px`)
+    circle.style.setProperty('--y1', `${random(-500, 500)}px`)
+    circle.style.setProperty('--x2', `${random(-700, 700)}px`)
+    circle.style.setProperty('--y2', `${random(-700, 700)}px`)
+    circle.style.setProperty('--x3', `${random(-500, 500)}px`)
+    circle.style.setProperty('--y3', `${random(-500, 500)}px`)
+
+    // Duración aleatoria de la animación
+    circle.style.animationDuration = `${random(20, 40)}s`
+
+    // Retardo aleatorio de la animación
+    circle.style.animationDelay = `${random(0, 10)}s`
+
+    circlesContainer.appendChild(circle)
 }
