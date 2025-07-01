@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Roboto:wdth,wght@75..100,500&display=swap');
 
 :root {
-    --background-color: #000000;
+    --background-color: rgba(49, 49, 49, 0.85);
     --text-color: #cecece;
 }
 
@@ -62,7 +62,7 @@ body {
 
 #background::before {
     content: '';
-    background: rgba(49, 36, 25, 0.85);
+    background: var(--background-color);
     width: 100%;
     height: 100%;
     position: absolute;
